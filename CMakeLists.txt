@@ -42,18 +42,18 @@ set_source_files_properties(${ASM_SOURCES} PROPERTIES
     COMPILE_FLAGS "/c"
 )
 
-# Compiler flags for MSVC
+# Compiler flags for MSVC (only apply to C++ files, not ASM)
 if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE
-        /W4             # High warning level
-        /WX-            # Don't treat warnings as errors (for development)
-        /permissive-    # Strict conformance
-        /Zc:__cplusplus # Report correct C++ version
+        $<$<COMPILE_LANGUAGE:CXX>:/W4>             # High warning level
+        $<$<COMPILE_LANGUAGE:CXX>:/WX->            # Don't treat warnings as errors (for development)
+        $<$<COMPILE_LANGUAGE:CXX>:/permissive->    # Strict conformance
+        $<$<COMPILE_LANGUAGE:CXX>:/Zc:__cplusplus> # Report correct C++ version
     )
     
     # Disable specific warnings that are noisy but not critical
     target_compile_options(${PROJECT_NAME} PRIVATE
-        /wd4100         # Unreferenced formal parameter
+        $<$<COMPILE_LANGUAGE:CXX>:/wd4100>         # Unreferenced formal parameter
     )
 endif()
 
